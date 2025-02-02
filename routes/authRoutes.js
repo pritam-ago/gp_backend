@@ -1,24 +1,20 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/User";
 
 const router = express.Router();
 const JWT_SECRET = "your_jwt_secret"; 
-
 
 router.post("/signup", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
-    
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    
     user = new User({ email, password: hashedPassword });
     await user.save();
 
@@ -32,7 +28,6 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    
     let user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
@@ -47,4 +42,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
