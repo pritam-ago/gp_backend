@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const router = express.Router();
-const JWT_SECRET = "your_jwt_secret"; 
+const JWT_SECRET = "18aaadca611c71e9e219db78c2643dda8548642bc9222a0bc00aeb87e8b233b5"; 
 
 router.post("/signup", async (req, res) => {
   try {
