@@ -8,13 +8,15 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:5000', 'http://localhost:5000', 'exp://10.11.104.175:8081'],
+  origin: ['http://localhost:5000', 'http://localhost:8081', 'exp://10.11.104.175:8081', 'http://localhost:19006'],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials : true
 }
-app.use(express.json());
+
 app.use(cors(corsOptions));
+app.options("*", cors());
+app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
