@@ -2,6 +2,7 @@ import express, { json } from "express";
 import { connect } from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 const app = express();
@@ -15,7 +16,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
-connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
