@@ -24,9 +24,9 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-app.use("api/auth", authRoutes);
-app.use("api/posts", postRoutes);
-app.use("api/generate", creationRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/generate", creationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
