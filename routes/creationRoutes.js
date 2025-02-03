@@ -2,7 +2,7 @@ import express from 'express';
 import OpenAI from 'openai';
 
 const router = express.Router();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY.trim });
 
 router.post('/generate', async (req, res) => {
     try {
