@@ -11,7 +11,7 @@ const app = express();
 
 const corsOptions = {
   origin: ['http://localhost:5000', 'http://localhost:8081', 'exp://10.11.104.175:8081', 'http://localhost:19006'],
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials : true
 }
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get('/auth/signup', (req, res) => {
+app.get('/api/auth/signup', (req, res) => {
   res.send('signup');
 });
 
