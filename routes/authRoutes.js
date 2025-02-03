@@ -8,14 +8,14 @@ const JWT_SECRET = "18aaadca611c71e9e219db78c2643dda8548642bc9222a0bc00aeb87e8b2
 
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name, username } = req.body;
 
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    user = new User({ email, password: hashedPassword });
+    user = new User({ email, password: hashedPassword, name, username });
     await user.save();
 
     res.json({ message: "User registered successfully" });
