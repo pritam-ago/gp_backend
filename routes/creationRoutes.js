@@ -1,45 +1,49 @@
 import express from 'express';
 import OpenAI from 'openai';
-import dotenv from 'dotenv';
 
-dotenv.config();
 const router = express.Router();
-
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const generateContent = async (prompt, platform) => {
-    const response = await openai.chat.completions.create({
-        model: "gpt-4",
-        messages: [
-            { role: "system", content: `Generate social media content and hashtags for ${platform}.` },
-            { role: "user", content: prompt }
-        ]
-    });
-
-    const content = response.choices[0]?.message?.content.trim();
-    const hashtags = content.match(/#[a-zA-Z0-9_]+/g) || []; 
-
-    return { content, hashtags };
-};
-
 router.post('/generate', async (req, res) => {
-    const { prompt, platforms } = req.body;
-
-    if (!prompt || !Array.isArray(platforms) || platforms.length === 0) {
-        return res.status(400).json({ error: "Please provide a prompt and at least one platform." });
-    }
-
     try {
-        const generatedPlatforms = {};
-        
-        for (const platform of platforms) {
-            generatedPlatforms[platform] = await generateContent(prompt, platform);
+        const { prompt, platforms } = req.body;
+
+        if (!prompt || !platforms || platforms.length === 0) {
+            return res.status(400).json({ error: "Prompt and at least one platform are required." });
         }
 
-        res.json({ platforms: generatedPlatforms });
+        console.log("Generating post for:", { prompt, platforms });
+
+        const generatedContent = {};
+
+        for (const platform of platforms) {
+            console.log(`Generating for platform: ${platform}`);
+            
+            const response = await openai.chat.completions.create({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "system", content: `Generate a social media post for ${platform} about: ${prompt}` }],
+                max_tokens: 100
+            });
+
+            console.log(`OpenAI Response for ${platform}:`, response);
+
+            if (!response.choices || response.choices.length === 0) {
+                console.error(`OpenAI returned no choices for ${platform}`);
+                return res.status(500).json({ error: `OpenAI returned no response for ${platform}` });
+            }
+
+            generatedContent[platform] = {
+                content: response.choices[0].message.content,
+                hashtags: [`#${platform}`, "#Generated", "#AI"]
+            };
+        }
+
+        console.log("Final generated content:", generatedContent);
+        res.json({ platforms: generatedContent });
+
     } catch (error) {
         console.error("Error generating post:", error);
-        res.status(500).json({ error: "Failed to generate post" });
+        res.status(500).json({ error: error.message || "Failed to generate post" });
     }
 });
 
