@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
-app.use("/api/generate", creationRoutes);
+app.use("/api", creationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -34,6 +34,9 @@ app.get("/", (req, res) => {
 
 app.get('/api/auth/signup', (req, res) => {
   res.send('signup');
+});
+app.get('/api/generate', (req, res) => {
+  res.send('generate');
 });
 
 const PORT = process.env.PORT || 5000;
