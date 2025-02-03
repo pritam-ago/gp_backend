@@ -22,7 +22,7 @@ const generateContent = async (prompt, platform) => {
     return { content, hashtags };
 };
 
-router.post('/generate', async (req, res) => {
+router.post('/', async (req, res) => {
     const { prompt, platforms } = req.body;
 
     if (!prompt || !Array.isArray(platforms) || platforms.length === 0) {
