@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import creationRoutes from "./routes/creationRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api", creationRoutes);
+app.use('/user', userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
