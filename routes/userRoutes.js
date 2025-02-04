@@ -15,17 +15,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
-    const { name, username, email, password } = req.body;
-    const user = new User({ name, username, email, password });
-    try {
-        const newUser = await user.save();
-        res.status(201).json(newUser);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
 router.put('/:id', async (req, res) => {
     const { name, username, email, password } = req.body;
     try {
