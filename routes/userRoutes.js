@@ -39,7 +39,7 @@ router.post("/:id/verify-password", async (req, res) => {
       const user = await User.findById(req.params.id);
       
       if (!user) return res.status(404).json({ message: "User not found" });
-  
+        
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       res.json({ valid: isMatch });
     } catch (err) {
