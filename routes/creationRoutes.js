@@ -1,6 +1,7 @@
 import express from 'express';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
+import Post from '../models/Post';
 
 dotenv.config();
 
@@ -42,6 +43,8 @@ router.post('/generate', async (req, res) => {
         }
 
         console.log("Final generated content:", generatedContent);
+        const post = new Post({ prompt, platforms, content: generatedContent });
+        await post.save();
         res.json({ platforms: generatedContent });
 
     } catch (error) {

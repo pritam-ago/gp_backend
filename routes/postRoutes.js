@@ -3,16 +3,6 @@ import Post from '../models/Post.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-    try {
-        const post = new Post(req.body);
-        await post.save();
-        res.status(201).json(post);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find();
@@ -29,16 +19,6 @@ router.get('/:id', async (req, res) => {
         res.json(post);
     } catch (error) {
         res.status(500).json({ error: error.message });
-    }
-});
-
-router.put('/:id', async (req, res) => {
-    try {
-        const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!post) return res.status(404).json({ message: 'Post not found' });
-        res.json(post);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
     }
 });
 
